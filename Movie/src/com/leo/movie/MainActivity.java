@@ -1,6 +1,7 @@
 package com.leo.movie;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.graphics.BitmapFactory;
@@ -20,7 +21,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +37,13 @@ public class MainActivity extends ActionBarActivity {
 	private int offset = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int bmpW;// 动画图片宽度
-	private View view1, view2, view3;// 各个页卡
+	private View view1,view3,view2;// 各个页卡
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		InitImageView();
 		InitTextView();
 		InitViewPager();
@@ -48,9 +53,38 @@ public class MainActivity extends ActionBarActivity {
 		viewPager = (ViewPager) findViewById(R.id.vPager);
 		views = new ArrayList<View>();
 		LayoutInflater inflater = getLayoutInflater();
-		view1 = inflater.inflate(R.layout.lay1, null);
-		view2 = inflater.inflate(R.layout.lay2, null);
+		view1 =  inflater.inflate(R.layout.lay1, null);
+		view2 =  inflater.inflate(R.layout.lay2, null);
 		view3 = inflater.inflate(R.layout.lay3, null);
+		//////////////////////////////////@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		ListView listview = (ListView) view2.findViewById(R.id.nearbycinema);
+		ReleaseTabAdapter adapter = new ReleaseTabAdapter(this);
+	    listview.setAdapter(adapter);
+	    listview.setOnItemClickListener(adapter);
+		//////////////////////////////////@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	      //生成动态数组，并且转入数据  
+	      GridView gridview = (GridView)view1.findViewById(R.id.gridview);
+	      ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();  
+	      for(int i=0;i<22;i++)  
+	      {  
+	        HashMap<String, Object> map = new HashMap<String, Object>();  
+	        map.put("ItemImage", R.drawable.ic_launcher);//添加图像资源的ID  
+	        map.put("ItemText", "NO."+String.valueOf(i));//按序号做ItemText  
+	        lstImageItem.add(map);  
+	      }  
+	      //生成适配器的ImageItem <====> 动态数组的元素，两者一一对应  
+	      SimpleAdapter saImageItems = new SimpleAdapter(this, //没什么解释  
+	                                                lstImageItem,//数据来源   
+	                                                R.layout.night_item,//night_item的XML实现  
+	                                                  
+	                                                //动态数组与ImageItem对应的子项          
+	                                                new String[] {"ItemImage","ItemText"},   
+	                                                  
+	                                                //ImageItem的XML文件里面的一个ImageView,两个TextView ID  
+	                                                new int[] {R.id.ItemImage,R.id.ItemText});  
+	      gridview.setAdapter(saImageItems);  
+		//////////////////////////////////@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		
 		views.add(view1);
 		views.add(view2);
 		views.add(view3);
@@ -179,7 +213,7 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main, menu); 
 		return true;
 	}
 
@@ -191,6 +225,9 @@ public class MainActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
+		}
+		if (id == R.id.action_search) {
+			 Toast.makeText(MainActivity.this, "查询一下下", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}

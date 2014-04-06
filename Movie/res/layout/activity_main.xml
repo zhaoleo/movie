@@ -16,7 +16,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:text=" @我"
+            android:text="上映"
             android:textColor="#000000"
             android:textSize="20.0dip" />
 
@@ -26,7 +26,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:text="评论"
+            android:text="影院"
             android:textColor="#000000"
             android:textSize="20.0dip" />
 
@@ -36,7 +36,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:text="私信"
+            android:text="我看"
             android:textColor="#000000"
             android:textSize="20.0dip" />
     </LinearLayout>
